@@ -23,4 +23,4 @@ public class Frame extends Sprite {
 	public Frame copy() {
 		return new Frame(image, scale, imageEffect, bounds, delay);
 	}
-} 
+}

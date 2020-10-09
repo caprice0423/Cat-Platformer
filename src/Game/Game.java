@@ -8,7 +8,7 @@ import Engine.ScreenManager;
  * This class just starts up a GameWindow and attaches the ScreenCoordinator to the ScreenManager instance in the GameWindow
  * From this point on the ScreenCoordinator class will dictate what the game does
  */
-public class Game  {
+public class Game {
 
     public static void main(String[] args) {
         new Game();
@@ -21,4 +21,3 @@ public class Game  {
         screenManager.setCurrentScreen(new ScreenCoordinator());
     }
 }
- 

@@ -40,7 +40,12 @@ public class LevelLoseScreen extends Screen {
             playLevelScreen.goBackToMenu();
         }
     }
-
+    
+    @Override
+    public Level.Map getMap() {
+    	return null;
+    }
+    
     public void draw(GraphicsHandler graphicsHandler) {
         graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), Color.black);
         loseMessage.draw(graphicsHandler);

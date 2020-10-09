@@ -38,7 +38,7 @@ public class GameObject extends AnimatedSprite {
 
 	public GameObject(SpriteSheet spriteSheet, float x, float y, String startingAnimation) {
 		super(spriteSheet, x, y, startingAnimation);
-		this.startPositionX = x; 
+		this.startPositionX = x;
 		this.startPositionY = y;
 		this.previousX = x;
 		this.previousY = y;

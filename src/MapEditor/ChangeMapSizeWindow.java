@@ -25,7 +25,7 @@ public class ChangeMapSizeWindow {
 
         changeMapSizeWindow = new JDialog();
         changeMapSizeWindow.setResizable(false);
-        changeMapSizeWindow.setSize(300, 310); 
+        changeMapSizeWindow.setSize(300, 310);
         changeMapSizeWindow.setTitle("Change Map Size");
         changeMapSizeWindow.setModal(true);
         changeMapSizeWindow.setLocationRelativeTo(parent);

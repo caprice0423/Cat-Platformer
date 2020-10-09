@@ -57,8 +57,8 @@ public class Camera extends Rectangle {
         Point tileIndex = getTileIndexByCameraPosition();
         for (int i = tileIndex.y - UPDATE_OFF_SCREEN_RANGE; i <= tileIndex.y + height + UPDATE_OFF_SCREEN_RANGE; i++) {
             for (int j = tileIndex.x - UPDATE_OFF_SCREEN_RANGE; j <= tileIndex.x + width + UPDATE_OFF_SCREEN_RANGE; j++) {
-                MapTile tile = map.getMapTile(j, i);
-                if (tile != null) {
+                MapTile tile = map.getMapTile(j,i); 
+                if (tile != null) {	
                     tile.update();
                 }
             }
@@ -258,4 +258,6 @@ public class Camera extends Rectangle {
     public float getEndBoundY() {
         return y + (height * tileHeight) + leftoverSpaceY;
     }
+    
+    
 }

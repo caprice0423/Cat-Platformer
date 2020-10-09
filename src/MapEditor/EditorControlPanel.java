@@ -16,7 +16,7 @@ public class EditorControlPanel extends JPanel {
 
     private ArrayList<String> mapNames;
     private SelectedTileIndexHolder selectedTileIndexHolder;
-    private JComboBox mapNamesComboBox;
+    private JComboBox<String> mapNamesComboBox;
     private TilePicker tilePicker;
     private MapBuilder mapBuilder;
     private Map selectedMap;
@@ -38,7 +38,7 @@ public class EditorControlPanel extends JPanel {
         mapLabel.setSize(100, 40);
         add(mapLabel);
 
-        mapNamesComboBox = new JComboBox();
+        mapNamesComboBox = new JComboBox<String>();
         mapNamesComboBox.setSize(190, 40);
         mapNamesComboBox.setLocation(5, 30);
         mapNames.sort(String::compareToIgnoreCase);
