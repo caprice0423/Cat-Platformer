@@ -12,7 +12,7 @@ import Screens.PlayLevelScreen;
  * There can only be one "currentScreen", although screens can have "nested" screens
  */
 public class ScreenCoordinator extends Screen {
-	// currently shown Screen 
+	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
@@ -59,7 +59,7 @@ public class ScreenCoordinator extends Screen {
 			currentScreen.update();
 		} while (previousGameState != gameState);
 	}
- 
+
 	@Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		// call the draw method for the currentScreen

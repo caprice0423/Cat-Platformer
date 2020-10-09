@@ -12,7 +12,7 @@ import java.awt.*;
 // This class is for the credits screen
 public class CreditsScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
-    protected Map background;
+    protected Map map;
     protected KeyLocker keyLocker = new KeyLocker();
     protected SpriteFont creditsLabel;
     protected SpriteFont createdByLabel;
@@ -26,8 +26,8 @@ public class CreditsScreen extends Screen {
     @Override
     public void initialize() {
         // setup graphics on screen (background map, spritefont text)
-        background = new TitleScreenMap();
-        background.setAdjustCamera(false);
+        map = new TitleScreenMap();
+        map.setAdjustCamera(false);
         creditsLabel = new SpriteFont("Credits", 15, 35, "Times New Roman", 30, Color.white);
         createdByLabel = new SpriteFont("Created by Alex Thimineur for Quinnipiac's SER225 Course.", 130, 140, "Times New Roman", 20, Color.white);
         contributorsLabel = new SpriteFont("Thank you to QU Alumni Brian Carducci, Joseph White,\nand Alex Hutman for their contributions.", 60, 220, "Times New Roman",20, Color.white);
@@ -36,7 +36,7 @@ public class CreditsScreen extends Screen {
     }
 
     public void update() {
-        background.update(null);
+        map.update(null);
 
         if (Keyboard.isKeyUp(Key.SPACE)) {
             keyLocker.unlockKey(Key.SPACE);
@@ -49,7 +49,7 @@ public class CreditsScreen extends Screen {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        background.draw(graphicsHandler);
+        map.draw(graphicsHandler);
         creditsLabel.draw(graphicsHandler);
         createdByLabel.draw(graphicsHandler);
         contributorsLabel.drawWithParsedNewLines(graphicsHandler);

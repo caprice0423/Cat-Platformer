@@ -26,7 +26,7 @@ public class Sprite extends Rectangle implements IntersectableRectangle {
         this.bounds = new Rectangle(0, 0, image.getWidth(), image.getHeight(), scale);
         this.imageEffect = imageEffect;
     }
-	 
+	
 	public BufferedImage getImage() {
 		return image;
 	}

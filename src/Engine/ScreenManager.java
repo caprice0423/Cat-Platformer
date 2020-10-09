@@ -22,9 +22,13 @@ public class ScreenManager {
         screen.initialize();
         this.currentScreen = screen;
     }
+    
+    public Screen getScreen() {
+    	return currentScreen;
+    }
 
     public void update() {
-        currentScreen.update(); 
+        currentScreen.update();
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
@@ -45,5 +49,10 @@ public class ScreenManager {
     public static Rectangle getScreenBounds() {
         return screenBounds;
     }
+    
+    // sets the currentScreen bounds to the input Rectangle's size - triggered when window is resized.
+	public void setScreenBounds(Rectangle rectangle) {
+		screenBounds = rectangle;
+		
+	}
 }
- 

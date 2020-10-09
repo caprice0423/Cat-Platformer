@@ -94,7 +94,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public PlayLevelScreenState getPlayLevelScreenState() {
         return playLevelScreenState;
     }
-
+    
     @Override
     public void onLevelCompleted() {
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;

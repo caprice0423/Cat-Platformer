@@ -23,7 +23,12 @@ public class LevelClearedScreen extends Screen {
     public void update() {
 
     }
-
+    
+    @Override
+    public Level.Map getMap() {
+    	return null;
+    }
+    
     public void draw(GraphicsHandler graphicsHandler) {
         // paint entire screen black and dislpay level cleared text
         graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(), Color.black);
