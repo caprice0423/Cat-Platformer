@@ -29,7 +29,7 @@ public class MenuScreen extends Screen { // implements MouseListener {
 		this.screenCoordinator = screenCoordinator;
 
 	}
-	
+	 
 
 	// @Override
 	public void initialize() {
@@ -56,71 +56,63 @@ public class MenuScreen extends Screen { // implements MouseListener {
 	}
 
 	public void update() {
-		// update background map (to play tile animations)
-		background.update(null);
+        // update background map (to play tile animations)
+        background.update(null);
 
-		if ((Mouse.isClicked()) && (isClicked == false) && (Mouse.isInside(new Rectangle(200,120,180,40)))) {
-			isClicked = true;
-			System.out.println(Mouse.getX() + "," + Mouse.getY());
-			screenCoordinator.setGameState(GameState.LEVEL);
-		} else if (!Mouse.isClicked()){
-			isClicked = false;
-		}
+        // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
+        if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp()) {
+            keyTimer.reset();
+            currentMenuItemHovered++;
+        } else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp()) {
+            keyTimer.reset();
+            currentMenuItemHovered--;
+        }
 
-		// if down or up is pressed, change menu item "hovered" over (blue square in
-		// front of text will move along with currentMenuItemHovered changing)
-		if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp()) {
-			keyTimer.reset();
-			currentMenuItemHovered++;
-		} else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp()) {
-			keyTimer.reset();
-			currentMenuItemHovered--;
-		}
+        // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
+        if (currentMenuItemHovered > 2) {
+            currentMenuItemHovered = 0;
+        } else if (currentMenuItemHovered == 1 ) {
+            currentMenuItemHovered = 1;
+        } else if(currentMenuItemHovered == 2){
+        	currentMenuItemHovered = 2;
+        }
+        // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
+        if (currentMenuItemHovered == 0) {
+            playGame.setColor(new Color(255, 215, 0));
+            instructions.setColor(new Color(49, 207, 240));
+            credits.setColor(new Color(49, 207, 240));
+            pointerLocationX = 170;
+            pointerLocationY = 130;
+        } else if (currentMenuItemHovered == 1) {
+            playGame.setColor(new Color(49, 207, 240));
+            instructions.setColor(new Color(255, 215, 0));
+            credits.setColor(new Color(49, 207, 240));
+            pointerLocationX = 170;
+            pointerLocationY = 182;
+        } else if (currentMenuItemHovered == 2) {
+            playGame.setColor(new Color(49, 207, 240));
+            instructions.setColor(new Color(49, 207, 240));
+            credits.setColor(new Color(255, 215, 0));
+            pointerLocationX = 170;
+            pointerLocationY = 230;
+        }
 
-		// if down is pressed on last menu item or up is pressed on first menu item,
-		// "loop" the selection back around to the beginning/end
-		if (currentMenuItemHovered > 1) {
-			currentMenuItemHovered = 0;
-		} else if (currentMenuItemHovered < 0) {
-			currentMenuItemHovered = 1;
-		}
-
-		// sets location for blue square in front of text (pointerLocation) and also
-		// sets color of spritefont text based on which menu item is being hovered
-		if (currentMenuItemHovered == 0) {
-			playGame.setColor(new Color(255, 215, 0));
-			credits.setColor(new Color(49, 207, 240));
-			pointerLocationX = 170;
-			pointerLocationY = 130;
-		} else if (currentMenuItemHovered == 1) {
-			playGame.setColor(new Color(49, 207, 240));
-			credits.setColor(new Color(255, 215, 0));
-			pointerLocationX = 170;
-			pointerLocationY = 230;
-		}
-
-		// if space is pressed on menu item, change to appropriate screen based on which
-		// menu item was chosen
-		if (Keyboard.isKeyUp(Key.SPACE)) {
-			keyLocker.unlockKey(Key.SPACE);
-		}
-		if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-			menuItemSelected = currentMenuItemHovered;
-			if (menuItemSelected == 0) {
-				screenCoordinator.setGameState(GameState.LEVEL);
-			} else if (menuItemSelected == 1) {
-				screenCoordinator.setGameState(GameState.CREDITS);
-			}
-		}
-		// if (screenCoordinator.getGameState() == GameState.MENU) {
-		// this.addMouseListener(new MouseAdapter() {
-
-		// public void mousePressed(MouseEvent e) {
-
-		// System.out.println("yay️");
-		// }
-
-	}
+        // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
+        if (Keyboard.isKeyUp(Key.SPACE)) {
+            keyLocker.unlockKey(Key.SPACE);
+        }
+        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+            menuItemSelected = currentMenuItemHovered;
+            if (menuItemSelected == 0) {
+                screenCoordinator.setGameState(GameState.LEVEL);
+            } else if (menuItemSelected == 1) {
+                screenCoordinator.setGameState(GameState.INSTRUCTIONS);
+            } else if (menuItemSelected == 2){
+            	screenCoordinator.setGameState(GameState.CREDITS);
+            }
+            	
+        }
+    }
 
 	public void draw(GraphicsHandler graphicsHandler) {
 		background.draw(graphicsHandler);
