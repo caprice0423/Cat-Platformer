@@ -7,4 +7,5 @@ bin/
 classes/
 out/
 TestResources/
+.DS_Store
 _site
