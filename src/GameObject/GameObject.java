@@ -32,6 +32,9 @@ public class GameObject extends AnimatedSprite {
 
 	// previous location the game object was in from the last frame
 	protected float previousX, previousY;
+	
+	// Toggleable flag that disable
+	protected boolean ignoreScreenBounds = false;
 
 	// the map instance this game object "belongs" to.
 	protected Map map;
@@ -198,7 +201,13 @@ public class GameObject extends AnimatedSprite {
 				setX(newLocation);
 			}
 		}
-
+		
+		// If new location is slated to be out of bounds, and the entity isn't supposed to be able to, move entity inwards a bit so it won't be.
+		if (outOfBounds(x) && !ignoreScreenBounds) {
+			hasCollided = true;
+			x = Math.min(map.getWidthPixels()-49, Math.max(-15, x));
+		}
+		
 		// call this method which a game object subclass can override to listen for collision events and react accordingly
 		onEndCollisionCheckX(hasCollided, direction);
 
@@ -321,5 +330,9 @@ public class GameObject extends AnimatedSprite {
 		} else {
 			super.drawBounds(graphicsHandler, color);
 		}
+	}
+	
+	private boolean outOfBounds(float x) {
+		return (x < -16 || x > map.getWidthPixels()-48);
 	}
 }

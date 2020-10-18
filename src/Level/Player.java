@@ -66,6 +66,7 @@ public abstract class Player extends GameObject {
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
+        	this.ignoreScreenBounds = false;
             applyGravity();
 
             // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
@@ -82,6 +83,8 @@ public abstract class Player extends GameObject {
             // move player with respect to map collisions based on how much player needs to move this frame
             super.moveYHandleCollision(moveAmountY);
             super.moveXHandleCollision(moveAmountX);
+            
+            
 
             updateLockedKeys();
         }
@@ -284,13 +287,18 @@ public abstract class Player extends GameObject {
                 airGroundState = AirGroundState.AIR;
             }
         }
-
+        
         // if player collides with map tile upwards, it means it was jumping and then hit into a ceiling -- immediately stop upwards jump velocity
         else if (direction == Direction.UP) {
             if (hasCollided) {
                 jumpForce = 0;
             }
         }
+        
+        // If player has fallen below the map - say, into a pit or something - kill them
+        if (y > map.getHeightPixels()) {
+        	levelState = LevelState.PLAYER_DEAD;
+        };
     }
 
     // other entities can call this method to hurt the player
@@ -320,6 +328,7 @@ public abstract class Player extends GameObject {
         }
         // move player to the right until it walks off screen
         else if (map.getCamera().containsDraw(this)) {
+        	this.ignoreScreenBounds = true;
             currentAnimationName = "WALK_RIGHT";
             super.update();
             moveXHandleCollision(walkSpeed);
