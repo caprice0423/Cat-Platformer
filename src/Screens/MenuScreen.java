@@ -60,10 +60,10 @@ public class MenuScreen extends Screen { // implements MouseListener {
         background.update(null);
 
         // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
-        if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp()) {
+        if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp() || Keyboard.isKeyDown(Key.S) && keyTimer.isTimeUp()) {
             keyTimer.reset();
             currentMenuItemHovered++;
-        } else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp()) {
+        } else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp() || Keyboard.isKeyDown(Key.W) && keyTimer.isTimeUp()) {
             keyTimer.reset();
             currentMenuItemHovered--;
         }

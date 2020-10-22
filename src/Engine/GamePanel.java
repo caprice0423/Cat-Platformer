@@ -1,6 +1,8 @@
 package Engine;
 
 import GameObject.Rectangle;
+import Level.LevelState;
+import Level.Player;
 import SpriteFont.SpriteFont;
 import Utils.Colors;
 
@@ -102,12 +104,12 @@ public class GamePanel extends JPanel {
 
 	public void update() {
 
-		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey)) {
+		if (Keyboard.isKeyDown(pauseKey) && !keyLocker.isKeyLocked(pauseKey) && ScreenCoordinator.getGameState() == GameState.LEVEL && Player.getLevelState() == LevelState.RUNNING) {
 			isGamePaused = !isGamePaused;
 			keyLocker.lockKey(pauseKey);
 		}
 
-		if (Keyboard.isKeyUp(pauseKey)) {
+		if (Keyboard.isKeyUp(pauseKey) && ScreenCoordinator.getGameState() == GameState.LEVEL) {
 			keyLocker.unlockKey(pauseKey);
 		}
 

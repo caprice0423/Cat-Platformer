@@ -31,7 +31,7 @@ public abstract class Player extends GameObject {
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
     protected AirGroundState previousAirGroundState;
-    protected LevelState levelState;
+    protected static LevelState levelState;
 
     // classes that listen to player events can be added to this list
     protected ArrayList<PlayerListener> listeners = new ArrayList<>();
@@ -390,6 +390,10 @@ public abstract class Player extends GameObject {
 
     public void setLevelState(LevelState levelState) {
         this.levelState = levelState;
+    }
+    
+    public static LevelState getLevelState() {
+        return levelState;
     }
 
     public void addListener(PlayerListener listener) {

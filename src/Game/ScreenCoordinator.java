@@ -18,10 +18,10 @@ public class ScreenCoordinator extends Screen {
 	protected Screen currentScreen = new DefaultScreen();
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
-	protected GameState gameState;
+	protected static GameState gameState;
 	protected GameState previousGameState;
 
-	public GameState getGameState() {
+	public static GameState getGameState() {
 		return gameState;
 	}
 
