@@ -8,14 +8,15 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
+import Maps.Level2Map;
 import Players.Cat;
 import Utils.Stopwatch;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
-    protected Map map;
-    protected Player player;
+    protected Map map, map2;
+    protected Player player, player2;
     protected PlayLevelScreenState playLevelScreenState;
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
@@ -28,10 +29,12 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public void initialize() {
         // define/setup map
         this.map = new TestMap();
+        this.map2 = new Level2Map();
         map.reset();
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        this.player2 = new Cat(map2.getPlayerStartPosition().x, map2.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
         this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
@@ -57,9 +60,11 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_WIN_MESSAGE:
                 if (screenTimer.isTimeUp()) {
                     levelClearedScreen = null;
-                    goBackToMenu();
+                    //goBackToMenu();
+                    playLevelScreenState = PlayLevelScreenState.NEXT_LEVEL;
                 }
                 break;
+           
             // if player died in level, bring up level lost screen
             case PLAYER_DEAD:
                 levelLoseScreen = new LevelLoseScreen(this);
@@ -70,6 +75,14 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_LOSE_MESSAGE:
                 levelLoseScreen.update();
                 break;
+            // displays new map for level 2
+            case NEXT_LEVEL:
+            	player2.setMap(map2);
+            	player.addListener(this);
+                player.setLocation(map2.getPlayerStartPosition().x, map2.getPlayerStartPosition().y);
+                player2.update();
+                map2.update(player2);
+            	break;
         }
     }
 
@@ -85,9 +98,15 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_WIN_MESSAGE:
                 levelClearedScreen.draw(graphicsHandler);
                 break;
+            case NEXT_LEVEL:
+            	map2.draw(graphicsHandler);
+            	player.draw(graphicsHandler);
+            	player2.draw(graphicsHandler);
+            	break;
             case LEVEL_LOSE_MESSAGE:
                 levelLoseScreen.draw(graphicsHandler);
                 break;
+           
         }
     }
 
@@ -115,6 +134,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE
+        RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, NEXT_LEVEL
     }
 }
