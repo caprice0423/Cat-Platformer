@@ -53,6 +53,7 @@ public class EditorControlPanel extends JPanel {
         });
         add(mapNamesComboBox);
         selectedMap = EditorMaps.getMapByName(mapNamesComboBox.getSelectedItem().toString());
+        selectedMap.getCamera().setY(0);
 
         tilePicker = new TilePicker(selectedTileIndexHolder);
         JScrollPane tilePickerScroll = new JScrollPane();
@@ -117,6 +118,7 @@ public class EditorControlPanel extends JPanel {
     }
     public void setMap() {
         selectedMap = EditorMaps.getMapByName(mapNamesComboBox.getSelectedItem().toString());
+        selectedMap.getCamera().setY(0);
         tilePicker.setTileset(selectedMap, selectedMap.getTileset());
         mapBuilder.setMap(selectedMap);
     }
