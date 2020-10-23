@@ -21,7 +21,7 @@ public class Rectangle implements IntersectableRectangle {
 		this.x = x;
 		this.y = y;
 		this.width = width;
-		this.height = height;
+		this.height = height; 
 		this.scale = 1;
 		this.color = Color.white;
 		this.borderColor = null;

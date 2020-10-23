@@ -61,15 +61,16 @@ public class Keyboard {
 		return keyUp.getOrDefault(keyMap.get(key), true);
 	}
 
-	// checks if multiple keys are being pressed at the same time
-	public static boolean areKeysDown(Key[] keys) {
-		for (Key key : keys) {
-			if (!keyDown.getOrDefault(keyMap.get(key), false)) {
-				return false;
-			}
-		}
-		return true;
-	}
+
+    // checks if multiple keys are being pressed at the same time
+    public static boolean areKeysDown(Key[] keys) {
+    	for (Key key : keys) {
+    		if (!keyDown.getOrDefault(keyMap.get(key), false)) {
+    			return false;
+    		}
+    	}
+    	return true; 
+    }
 
 	// checks if multiple keys are not being pressed at the same time
 	public static boolean areKeysUp(Key[] keys) {
@@ -92,7 +93,7 @@ public class Keyboard {
 				put(Key.LEFT, 37);
 				put(Key.ENTER, 10);
 				put(Key.SHIFT, 16);
-				put(Key.A, 65);
+				put(Key.A, 65); 
 				put(Key.B, 66);
 				put(Key.C, 67);
 				put(Key.D, 68);

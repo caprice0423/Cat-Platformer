@@ -26,7 +26,7 @@ public class AnimatedSprite implements IntersectableRectangle {
 	protected String previousAnimationName = "";
 
 	// keeps track of current frame number in an animation the sprite is using
-	protected int currentFrameIndex;
+	protected int currentFrameIndex; 
 
 	// if an animation has looped, this is set to true
 	protected boolean hasAnimationLooped;

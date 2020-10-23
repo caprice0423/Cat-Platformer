@@ -22,5 +22,5 @@ public class KeyLocker {
     // check if a key is currently locked
     public boolean isKeyLocked(Key key) {
         return lockedKeys.contains(key);
-    }
+    } 
 }

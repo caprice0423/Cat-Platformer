@@ -39,7 +39,7 @@ public class GamePanel extends JPanel {
 	private boolean isGamePaused = false;
 	private SpriteFont pauseLabel;
 	private KeyLocker keyLocker = new KeyLocker();
-	private final Key pauseKey = Key.P;
+	private final Key pauseKey = Key.P;  
 
 	/*
 	 * The JPanel and various important class instances are setup here
@@ -54,7 +54,7 @@ public class GamePanel extends JPanel {
 		// attaches Keyboard class's keyListener to this JPanel
 		this.addKeyListener(Keyboard.getKeyListener());
 		
-		this.addMouseListener(Mouse.getMouseListener());
+		this.addMouseListener(Mouse.getMouseListener()); 
 
 //		if (screenCoordinator.getGameState() == GameState.MENU) {
 

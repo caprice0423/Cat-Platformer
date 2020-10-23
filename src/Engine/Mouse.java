@@ -29,7 +29,7 @@ public class Mouse {
 		return (x > r.getX() && x < r.getX2()) && (y < r.getY2() && y > r.getY());
 
 	}
-
+ 
 	public static MouseListener getMouseListener() {
 		return mouseListener;
 	}
