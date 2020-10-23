@@ -45,7 +45,7 @@ public abstract class Player extends GameObject {
     protected Key JUMP_KEY2 = Key.W;
     protected Key MOVE_LEFT_KEY2 = Key.A;
     protected Key MOVE_RIGHT_KEY2 = Key.D;
-    protected Key CROUCH_KEY2 = Key.S;
+    protected Key CROUCH_KEY2 = Key.S; 
 
     // if true, player cannot be hurt by enemies (good for testing)
     protected boolean isInvincible = false;
