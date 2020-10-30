@@ -1,22 +1,19 @@
 package Engine;
 
 import GameObject.Rectangle;
-import Level.LevelState;
-import Level.Player;
 import SpriteFont.SpriteFont;
 import Utils.Colors;
 
 import javax.swing.*;
-
+import Level.LevelState;
+import Level.Player;
 import Game.GameState;
 import Game.ScreenCoordinator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 
 /*
  * This is where the game loop starts
@@ -39,7 +36,7 @@ public class GamePanel extends JPanel {
 	private boolean isGamePaused = false;
 	private SpriteFont pauseLabel;
 	private KeyLocker keyLocker = new KeyLocker();
-	private final Key pauseKey = Key.P;  
+	private final Key pauseKey = Key.P;
 
 	/*
 	 * The JPanel and various important class instances are setup here
@@ -53,11 +50,10 @@ public class GamePanel extends JPanel {
 
 		// attaches Keyboard class's keyListener to this JPanel
 		this.addKeyListener(Keyboard.getKeyListener());
-		
-		this.addMouseListener(Mouse.getMouseListener()); 
+
+		this.addMouseListener(Mouse.getMouseListener());
 
 //		if (screenCoordinator.getGameState() == GameState.MENU) {
-
 
 		graphicsHandler = new GraphicsHandler();
 
@@ -110,16 +106,17 @@ public class GamePanel extends JPanel {
 		}
 
 		if (Keyboard.isKeyUp(pauseKey) && ScreenCoordinator.getGameState() == GameState.LEVEL) {
+			keyLocker.unlockKey(pauseKey);				
 			keyLocker.unlockKey(pauseKey);
-		}
+		}			
 
 		if (!isGamePaused) {
-			screenManager.update(); 
+			screenManager.update();
 		}
 
 	}
 
-	public void draw() { 
+	public void draw() {
 		screenManager.draw(graphicsHandler);
 
 		// if game is paused, draw pause gfx over Screen gfx
