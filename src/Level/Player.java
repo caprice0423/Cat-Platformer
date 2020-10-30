@@ -9,6 +9,9 @@ import Utils.AirGroundState;
 import Utils.Direction;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Player extends GameObject {
 	// values that affect player movement
@@ -35,6 +38,7 @@ public abstract class Player extends GameObject {
 
 	// classes that listen to player events can be added to this list
 	protected ArrayList<PlayerListener> listeners = new ArrayList<>();
+	protected ArrayList<Key> tracker = new ArrayList<>();
 
 	// define keys
 	protected KeyLocker keyLocker = new KeyLocker();
@@ -61,10 +65,10 @@ public abstract class Player extends GameObject {
 		previousPlayerState = playerState;
 		levelState = LevelState.RUNNING;
 	}
-	
+
 	public static LevelState getLevelState() {
-        return levelState;
-    }
+		return levelState;
+	}
 
 	public void update() {
 		moveAmountX = 0;
@@ -127,9 +131,7 @@ public abstract class Player extends GameObject {
 		case JUMPING:
 			playerJumping();
 			break;
-		/*
-		 * case CWALK: playerCrouchWalk();
-		 */
+
 		}
 	}
 
@@ -143,6 +145,7 @@ public abstract class Player extends GameObject {
 		if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_LEFT_KEY2)
 				|| Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY2)) {
 			playerState = PlayerState.WALKING;
+
 		}
 
 		// if jump key is pressed, player enters JUMPING state
@@ -155,26 +158,46 @@ public abstract class Player extends GameObject {
 
 		// if crouch key is pressed, player enters CROUCHING state
 
-	 	else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(CROUCH_KEY2)) {
+		else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(CROUCH_KEY2)) {
 			playerState = PlayerState.CROUCHING;
 		}
 	}
 
 	// player WALKING state logic
 	protected void playerWalking() {
-
 		// sets animation to a WALK animation based on which way player is facing
 		currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
-		
-		// if walk right key is pressed, move player to the right
-		 if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY2)) {
-			moveAmountX += walkSpeed; 
-			facingDirection = Direction.RIGHT;
 
-			// if walk left key is pressed, move player to the left
-		} else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_LEFT_KEY2)) {
+		if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(MOVE_LEFT_KEY)) {
+			moveAmountX += walkSpeed;
+			facingDirection = Direction.RIGHT;
+			tracker.add(MOVE_RIGHT_KEY);
+
+			if (tracker.contains(MOVE_LEFT_KEY)) {
+				tracker.removeAll(Collections.singleton(MOVE_LEFT_KEY));
+			}
+			//System.out.println(tracker);
+		}
+
+		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
 			moveAmountX -= walkSpeed;
 			facingDirection = Direction.LEFT;
+			tracker.add(MOVE_LEFT_KEY);
+
+			if (tracker.contains(MOVE_RIGHT_KEY)) {
+				tracker.removeAll(Collections.singleton(MOVE_RIGHT_KEY));
+			}
+			//System.out.println(tracker);
+		}
+
+		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+			if (tracker.containsAll(Collections.singleton(MOVE_LEFT_KEY))) {
+				moveAmountX += walkSpeed;
+				facingDirection = Direction.RIGHT;
+			} else if (tracker.containsAll(Collections.singleton(MOVE_RIGHT_KEY))) {
+				moveAmountX -= walkSpeed;
+				facingDirection = Direction.LEFT;
+			}
 		}
 
 		else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)
@@ -194,6 +217,7 @@ public abstract class Player extends GameObject {
 		else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(CROUCH_KEY2)) {
 			playerState = PlayerState.CROUCHING;
 		}
+
 	}
 
 	// player CROUCHING state logic
@@ -334,7 +358,7 @@ public abstract class Player extends GameObject {
 		if (y > map.getHeightPixels()) {
 			levelState = LevelState.PLAYER_DEAD;
 		}
-		;
+
 	}
 
 	// other entities can call this method to hurt the player
