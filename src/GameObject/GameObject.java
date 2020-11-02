@@ -205,7 +205,7 @@ public class GameObject extends AnimatedSprite {
 		// If new location is slated to be out of bounds, and the entity isn't supposed to be able to, move entity inwards a bit so it won't be.
 		if (outOfBounds(x) && !ignoreScreenBounds) {
 			hasCollided = true;
-			x = Math.min(map.getWidthPixels()-49, Math.max(-15, x));
+			setX(Math.min(map.getWidthPixels()-49, Math.max(-15, x)));
 		}
 		
 		// call this method which a game object subclass can override to listen for collision events and react accordingly
