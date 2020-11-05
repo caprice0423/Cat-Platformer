@@ -48,7 +48,7 @@ public class Mouse {
 
 			x = e.getX();
 			y = e.getY();
-			System.out.println(e.getX() + "," + e.getY());
+			//System.out.println(e.getX() + "," + e.getY());
 			// System.out.println("test");
 
 		}

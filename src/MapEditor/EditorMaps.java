@@ -2,9 +2,9 @@ package MapEditor;
 
 import Level.Map;
 import Maps.Level2Map;
+import Maps.Level3Map;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
-
 import java.util.ArrayList;
 
 public class EditorMaps {
@@ -13,6 +13,7 @@ public class EditorMaps {
             add("TestMap");
             add("TitleScreen");
             add("Level2Map");
+            add("Level3Map");
         }};
     }
 
@@ -24,6 +25,8 @@ public class EditorMaps {
                 return new TitleScreenMap();
             case "Level2Map":
             	return new Level2Map();
+            case "Level3Map":
+            	return new Level3Map();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
