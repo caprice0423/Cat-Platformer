@@ -4,23 +4,26 @@ import Engine.GraphicsHandler;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Level.LevelState;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.TestMap;
 import Maps.Level2Map;
+import Maps.Level4Map;
 import Players.Cat;
 import Utils.Stopwatch;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
-    protected Map map, map2;
-    protected Player player, player2;
+    protected Map map, map2, map4;
+    protected Player player, player2, player4;
     protected PlayLevelScreenState playLevelScreenState;
     protected Stopwatch screenTimer = new Stopwatch();
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
+    private int mapNum;
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -30,15 +33,26 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         // define/setup map
         this.map = new TestMap();
         this.map2 = new Level2Map();
+        this.map4 = new Level4Map();
         map.reset();
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player2 = new Cat(map2.getPlayerStartPosition().x, map2.getPlayerStartPosition().y);
+        this.player4 = new Cat(map4.getPlayerStartPosition().x, map4.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
         this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        this.player2.setMap(map2);
+        this.player2.addListener(this);
+        this.player2.setLocation(map2.getPlayerStartPosition().x, map2.getPlayerStartPosition().y);
+        this.player4.setMap(map4);
+        this.player4.addListener(this);
+        this.player4.setLocation(map4.getPlayerStartPosition().x, map4.getPlayerStartPosition().y);
         this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        
+        //Used to keep track of current map
+        mapNum = 1;
     }
 
     public void update() {
@@ -60,8 +74,18 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case LEVEL_WIN_MESSAGE:
                 if (screenTimer.isTimeUp()) {
                     levelClearedScreen = null;
-                    //goBackToMenu();
-                    playLevelScreenState = PlayLevelScreenState.NEXT_LEVEL;
+                    mapNum++;
+                    if (mapNum == 2) {
+                    	playLevelScreenState = PlayLevelScreenState.NEXT_LEVEL;
+                    	player2.setLevelState(LevelState.RUNNING);
+                        System.out.println(mapNum);
+                    } else if (mapNum == 3) 
+          //Caprice you will need to move mine down into an if mapNum == 4 and put yours here          
+                    {
+                    	playLevelScreenState = PlayLevelScreenState.NEXT_LEVEL;
+                    	player4.setLevelState(LevelState.RUNNING);
+                        System.out.println(mapNum);                     
+                    }
                 }
                 break;
            
@@ -77,11 +101,15 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 break;
             // displays new map for level 2
             case NEXT_LEVEL:
-            	player2.setMap(map2);
-            	player.addListener(this);
-                player.setLocation(map2.getPlayerStartPosition().x, map2.getPlayerStartPosition().y);
-                player2.update();
-                map2.update(player2);
+            	if (mapNum == 2) {
+            		player2.update();
+                    map2.update(player2);
+            	} else if (mapNum == 3) 
+            //Caprice: Same thing here as above	
+            	{
+            		player4.update();
+                    map4.update(player4);
+            	}
             	break;
         }
     }
@@ -99,9 +127,15 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 levelClearedScreen.draw(graphicsHandler);
                 break;
             case NEXT_LEVEL:
-            	map2.draw(graphicsHandler);
-            	player.draw(graphicsHandler);
-            	player2.draw(graphicsHandler);
+            	if (mapNum == 2) {
+            		map2.draw(graphicsHandler);
+                	player2.draw(graphicsHandler);
+            	} else if (mapNum == 3) 
+            //Caprice: Again same thing here	
+            	{
+            		map4.draw(graphicsHandler);
+                	player4.draw(graphicsHandler);
+            	}
             	break;
             case LEVEL_LOSE_MESSAGE:
                 levelLoseScreen.draw(graphicsHandler);
