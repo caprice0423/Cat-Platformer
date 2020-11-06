@@ -168,33 +168,41 @@ public abstract class Player extends GameObject {
 		// sets animation to a WALK animation based on which way player is facing
 		currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
 
-		if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(MOVE_LEFT_KEY)) {
+		if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(MOVE_LEFT_KEY)
+				|| Keyboard.isKeyDown(MOVE_RIGHT_KEY2) && Keyboard.isKeyUp(MOVE_LEFT_KEY2)) {
 			moveAmountX += walkSpeed;
 			facingDirection = Direction.RIGHT;
 			tracker.add(MOVE_RIGHT_KEY);
-
-			if (tracker.contains(MOVE_LEFT_KEY)) {
+			tracker.add(MOVE_RIGHT_KEY2);
+			if (tracker.contains(MOVE_LEFT_KEY) || tracker.contains(MOVE_LEFT_KEY2)) {
 				tracker.removeAll(Collections.singleton(MOVE_LEFT_KEY));
+				tracker.removeAll(Collections.singleton(MOVE_LEFT_KEY2));
 			}
-			//System.out.println(tracker);
+			System.out.println(tracker);
 		}
 
-		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
+		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)
+				|| Keyboard.isKeyDown(MOVE_LEFT_KEY2) && Keyboard.isKeyUp(MOVE_RIGHT_KEY2)) {
 			moveAmountX -= walkSpeed;
 			facingDirection = Direction.LEFT;
 			tracker.add(MOVE_LEFT_KEY);
+			tracker.add(MOVE_LEFT_KEY2);
 
-			if (tracker.contains(MOVE_RIGHT_KEY)) {
+			if (tracker.contains(MOVE_RIGHT_KEY) || tracker.contains(MOVE_RIGHT_KEY2)) {
 				tracker.removeAll(Collections.singleton(MOVE_RIGHT_KEY));
+				tracker.removeAll(Collections.singleton(MOVE_RIGHT_KEY2));
 			}
-			//System.out.println(tracker);
+			System.out.println(tracker);
 		}
 
-		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
-			if (tracker.containsAll(Collections.singleton(MOVE_LEFT_KEY))) {
+		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyDown(MOVE_RIGHT_KEY)
+				|| Keyboard.isKeyDown(MOVE_LEFT_KEY2) && Keyboard.isKeyDown(MOVE_RIGHT_KEY2)) {
+			if (tracker.containsAll(Collections.singleton(MOVE_LEFT_KEY))
+					|| tracker.containsAll(Collections.singleton(MOVE_LEFT_KEY2))) {
 				moveAmountX += walkSpeed;
 				facingDirection = Direction.RIGHT;
-			} else if (tracker.containsAll(Collections.singleton(MOVE_RIGHT_KEY))) {
+			} else if (tracker.containsAll(Collections.singleton(MOVE_RIGHT_KEY))
+					|| tracker.containsAll(Collections.singleton(MOVE_RIGHT_KEY2))) {
 				moveAmountX -= walkSpeed;
 				facingDirection = Direction.LEFT;
 			}
