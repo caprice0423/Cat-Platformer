@@ -1,6 +1,8 @@
 package Maps;
 
-import Enemies.BugEnemy;
+import Enemies.BugEnemy; 
+import Enemies.SnakeEnemy;
+import Enemies.TinyMouseEnemy;
 import Enemies.DinosaurEnemy;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
@@ -24,13 +26,12 @@ public class Level4Map extends Map {
 	@Override
 	public ArrayList<Enemy> loadEnemies() {
 		ArrayList<Enemy> enemies = new ArrayList<>();
-		enemies.add(new BugEnemy(getPositionByTileIndex(18, 10), Direction.LEFT));
-		enemies.add(new BugEnemy(getPositionByTileIndex(24, 7), Direction.LEFT));
+		enemies.add(new TinyMouseEnemy(getPositionByTileIndex(18, 10), Direction.LEFT));
+		enemies.add(new TinyMouseEnemy(getPositionByTileIndex(22, 10), Direction.LEFT));
+		enemies.add(new TinyMouseEnemy(getPositionByTileIndex(24, 7), Direction.LEFT));
 		enemies.add(new DinosaurEnemy(getPositionByTileIndex(20, 1).addY(2), getPositionByTileIndex(24, 1).addY(2),
 				Direction.RIGHT));
-		enemies.add(new DinosaurEnemy(getPositionByTileIndex(15, 12).addY(2), getPositionByTileIndex(26, 12).addY(2),
-				Direction.LEFT));
-		enemies.add(new DinosaurEnemy(getPositionByTileIndex(27, 3).addY(2), getPositionByTileIndex(28, 3).addY(2),
+		enemies.add(new SnakeEnemy(getPositionByTileIndex(28, 2).addY(2), getPositionByTileIndex(30, 2).addY(2),
 				Direction.RIGHT));
 		return enemies;
 	}

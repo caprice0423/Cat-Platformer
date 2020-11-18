@@ -25,7 +25,10 @@ public class Level2Map extends Map {
 	public ArrayList<Enemy> loadEnemies() {
 		ArrayList<Enemy> enemies = new ArrayList<>();
 		enemies.add(new BugEnemy(getPositionByTileIndex(26, 9), Direction.LEFT));
+		enemies.add(new BugEnemy(getPositionByTileIndex(25, 9), Direction.LEFT));
 		enemies.add(new BugEnemy(getPositionByTileIndex(24, 9), Direction.LEFT));
+		enemies.add(new DinosaurEnemy(getPositionByTileIndex(7, 4).addY(2), getPositionByTileIndex(10, 5).addY(2),
+				Direction.RIGHT));
 		enemies.add(new DinosaurEnemy(getPositionByTileIndex(17, 3).addY(2), getPositionByTileIndex(20, 3).addY(2),
 				Direction.RIGHT));
 		return enemies;
