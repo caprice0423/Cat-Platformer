@@ -1,6 +1,8 @@
 package Maps;
 
-import Enemies.BugEnemy;
+import Enemies.BugEnemy; 
+import Enemies.SnakeEnemy;
+import Enemies.TinyMouseEnemy;
 import Enemies.DinosaurEnemy;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
@@ -24,14 +26,18 @@ public class Level4Map extends Map {
 	@Override
 	public ArrayList<Enemy> loadEnemies() {
 		ArrayList<Enemy> enemies = new ArrayList<>();
-		enemies.add(new BugEnemy(getPositionByTileIndex(18, 10), Direction.LEFT));
-		enemies.add(new BugEnemy(getPositionByTileIndex(24, 7), Direction.LEFT));
-		enemies.add(new DinosaurEnemy(getPositionByTileIndex(20, 1).addY(2), getPositionByTileIndex(24, 1).addY(2),
+		enemies.add(new TinyMouseEnemy(getPositionByTileIndex(18, 13), Direction.LEFT));
+		enemies.add(new TinyMouseEnemy(getPositionByTileIndex(32, 13), Direction.LEFT));
+		enemies.add(new TinyMouseEnemy(getPositionByTileIndex(24, 9), Direction.LEFT));
+		enemies.add(new TinyMouseEnemy(getPositionByTileIndex(24, 8), Direction.LEFT));
+		enemies.add(new DinosaurEnemy(getPositionByTileIndex(20, 2).addY(2), getPositionByTileIndex(24, 1).addY(2),
 				Direction.RIGHT));
-		enemies.add(new DinosaurEnemy(getPositionByTileIndex(15, 12).addY(2), getPositionByTileIndex(26, 12).addY(2),
+		enemies.add(new DinosaurEnemy(getPositionByTileIndex(37, 4).addY(2), getPositionByTileIndex(38, 4).addY(2),
 				Direction.LEFT));
-		enemies.add(new DinosaurEnemy(getPositionByTileIndex(27, 3).addY(2), getPositionByTileIndex(28, 3).addY(2),
+		enemies.add(new DinosaurEnemy(getPositionByTileIndex(35, 4).addY(2), getPositionByTileIndex(36, 4).addY(2),
 				Direction.RIGHT));
+		enemies.add(new SnakeEnemy(getPositionByTileIndex(28, 8).addY(3), getPositionByTileIndex(37, 8).addY(3),
+				Direction.LEFT));
 		return enemies;
 	}
 
@@ -46,7 +52,7 @@ public class Level4Map extends Map {
 				getPositionByTileIndex(14, 1), getPositionByTileIndex(18, 1), TileType.JUMP_THROUGH_PLATFORM, 3,
 				new Rectangle(0, 6, 16, 4), Direction.RIGHT));
 
-		enhancedMapTiles.add(new EndLevelBox(getPositionByTileIndex(32, 7)));
+		enhancedMapTiles.add(new EndLevelBox(getPositionByTileIndex(47, 7)));
 
 		return enhancedMapTiles;
 	}

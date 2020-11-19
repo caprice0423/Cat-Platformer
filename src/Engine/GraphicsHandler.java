@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 
 
 public class GraphicsHandler {
-    private Graphics2D g;
+    private static Graphics2D g;
 
     public void setGraphics(Graphics2D g) {
         this.g = g;
@@ -61,7 +61,7 @@ public class GraphicsHandler {
         drawRectangle(x, y, width, height, borderColor, borderThickness);
     }
 
-    public void drawString(String text, int x, int y, Font font, Color color) {
+    public static void drawString(String text, int x, int y, Font font, Color color) {
         g.setFont(font);
         g.setColor(color);
         g.drawString(text, x, y);

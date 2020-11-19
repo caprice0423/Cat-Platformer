@@ -8,13 +8,14 @@ import GameObject.SpriteSheet;
 import Players.FishThrow;
 import Utils.AirGroundState;
 import Utils.Direction;
+
 import Utils.Point;
+
 import Utils.Stopwatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import Enemies.Fireball;
 
 public abstract class Player extends GameObject {
 	// values that affect player movement
@@ -60,6 +61,7 @@ public abstract class Player extends GameObject {
 	protected boolean isInvincible = false;
 	protected boolean isFirst;
 	protected boolean isSecond;
+	
 
 	private Stopwatch shotTimer = new Stopwatch();
 
@@ -422,7 +424,7 @@ public abstract class Player extends GameObject {
 		if (!isInvincible) {
 			// if map entity is an enemy, kill player on touch
 			if (mapEntity instanceof Enemy) {
-				levelState = LevelState.PLAYER_DEAD;
+				levelState = LevelState.PLAYER_DEAD;		
 			}
 		}
 	}

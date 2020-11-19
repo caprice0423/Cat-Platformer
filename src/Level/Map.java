@@ -3,8 +3,11 @@ package Level;
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
+import Screens.PlayLevelScreen;
 import Utils.Point;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -394,7 +397,10 @@ public abstract class Map {
         setupMap();
     }
 
+    Font bigFont = new Font("Serif", Font.BOLD, 22);
     public void draw(GraphicsHandler graphicsHandler) {
         camera.draw(graphicsHandler);
+        // displays the player lives in the upper left corner
+        Engine.GraphicsHandler.drawString("Player Lives: " + PlayLevelScreen.getPlayerLives(), 20, 20, bigFont, Color.BLACK);
     }
 }
