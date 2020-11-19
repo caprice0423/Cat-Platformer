@@ -166,7 +166,7 @@ public abstract class Player extends GameObject {
 			if (playerState == PlayerState.CROUCHING) {
 				fishY = Math.round(getLocationY()) + 35;
 			} else {
-				fishY = Math.round(getLocationY()) + 20;
+				fishY = Math.round(getLocationY()) + 25;
 			}
 
 			FishThrow a = new FishThrow(new Point(fishX, fishY), movementSpeed, 1000);
