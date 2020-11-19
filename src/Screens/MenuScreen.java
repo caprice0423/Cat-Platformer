@@ -134,6 +134,7 @@ public class MenuScreen extends Screen { // implements MouseListener {
 			menuItemSelected = currentMenuItemHovered;
 			if (menuItemSelected == 0) {
 				screenCoordinator.setGameState(GameState.LEVEL);
+				PlayLevelScreen.setPlayerLives(3);
 			} else if (menuItemSelected == 1) {
 				screenCoordinator.setGameState(GameState.INSTRUCTIONS);
 			} else if (menuItemSelected == 2) {

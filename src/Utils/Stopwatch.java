@@ -13,7 +13,7 @@ public class Stopwatch {
 
     // will return true or false based on if the "time" is up (a specified number of milliseconds have passed)
     public boolean isTimeUp() {
-        return System.currentTimeMillis() - beforeTime > millisecondsToWait;
+       return System.currentTimeMillis() - beforeTime > millisecondsToWait;
     }
 
     // reset timer to wait again for specified number of milliseconds

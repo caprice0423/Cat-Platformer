@@ -7,6 +7,7 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Stopwatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +56,7 @@ public abstract class Player extends GameObject {
 	protected boolean isInvincible = false;
 	protected boolean isFirst;
 	protected boolean isSecond;
+	
 
 	public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
 		super(spriteSheet, x, y, startingAnimationName);
@@ -374,7 +376,7 @@ public abstract class Player extends GameObject {
 		if (!isInvincible) {
 			// if map entity is an enemy, kill player on touch
 			if (mapEntity instanceof Enemy) {
-				levelState = LevelState.PLAYER_DEAD;
+				levelState = LevelState.PLAYER_DEAD;		
 			}
 		}
 	}

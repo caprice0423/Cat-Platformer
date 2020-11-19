@@ -18,10 +18,18 @@ public class LevelLoseScreen extends Screen {
 
     @Override
     public void initialize() {
+    	// if the player is out of lives changes the screen message
+    	if (PlayLevelScreen.getPlayerLives() == 0) {
+    		loseMessage = new SpriteFont("Game Over!", 350, 270, "Comic Sans", 30, Color.white);
+            instructions = new SpriteFont("Press Space or Escape to go back to the main menu", 190, 300,"Comic Sans", 20, Color.white);
+            keyLocker.lockKey(Key.SPACE);
+            keyLocker.lockKey(Key.ESC); 
+    	} else {
         loseMessage = new SpriteFont("You lose!", 350, 270, "Comic Sans", 30, Color.white);
         instructions = new SpriteFont("Press Space to try again or Escape to go back to the main menu", 120, 300,"Comic Sans", 20, Color.white);
         keyLocker.lockKey(Key.SPACE);
         keyLocker.lockKey(Key.ESC); 
+    	}
     }
 
     @Override
@@ -34,7 +42,11 @@ public class LevelLoseScreen extends Screen {
         }
 
         // if space is pressed, reset level. if escape is pressed, go back to main menu
+        // if the player is out of lives the space also brings the user back to main menu
         if (Keyboard.isKeyDown(Key.SPACE)) {
+        	if (PlayLevelScreen.getPlayerLives() == 0) {
+        		playLevelScreen.goBackToMenu();
+        	}
             playLevelScreen.resetLevel();
         } else if (Keyboard.isKeyDown(Key.ESC)) {
             playLevelScreen.goBackToMenu();
