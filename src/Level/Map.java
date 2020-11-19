@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 /*
     This class is for defining a map that is used for a specific level
     The map class handles/manages a lot of different things, including:
@@ -53,6 +54,7 @@ public abstract class Map {
 
     // lists to hold map entities that are a part of the map
     protected ArrayList<Enemy> enemies;
+    protected ArrayList<Attacking> attacking;
     protected ArrayList<EnhancedMapTile> enhancedMapTiles;
     protected ArrayList<NPC> npcs;
 
@@ -78,6 +80,11 @@ public abstract class Map {
     public void setupMap() {
         loadMapFile();
 
+        this.attacking = loadAttack();
+        for (Attacking attack: this.attacking) {
+            attack.setMap(this);
+        }
+        
         this.enemies = loadEnemies();
         for (Enemy enemy: this.enemies) {
             enemy.setMap(this);
@@ -246,7 +253,9 @@ public abstract class Map {
     protected ArrayList<Enemy> loadEnemies() {
         return new ArrayList<>();
     }
-
+    protected ArrayList<Attacking> loadAttack() {
+        return new ArrayList<>();
+    }
     // list of enhanced map tiles defined to be a part of the map, should be overridden in a subclass
     protected ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         return new ArrayList<>();
@@ -264,6 +273,11 @@ public abstract class Map {
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
+    
+    public ArrayList<Attacking> getAttacking() {
+        return attacking;
+    }
+    
     public ArrayList<EnhancedMapTile> getEnhancedMapTiles() {
         return enhancedMapTiles;
     }
@@ -292,6 +306,12 @@ public abstract class Map {
         this.enemies.add(enemy);
     }
 
+    public void addAttack(Attacking a) {
+        a.setMap(this);
+        this.attacking.add(a);
+    }
+    
+    
     // add an enhanced map tile to the map's list of enhanced map tiles
     public void addEnhancedMapTile(EnhancedMapTile enhancedMapTile) {
         enhancedMapTile.setMap(this);

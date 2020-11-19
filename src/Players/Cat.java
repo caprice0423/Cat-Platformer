@@ -14,9 +14,13 @@ import java.util.HashMap;
 // This is the class for the Cat player character
 // basically just sets some values for physics and then defines animations
 public class Cat extends Player {
+protected float x, y;
 
+	
     public Cat(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24), x, y, "STAND_RIGHT");
+        this.x = x;
+        this.y = y;
         gravity = .5f;
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
@@ -31,6 +35,7 @@ public class Cat extends Player {
         MOVE_RIGHT_KEY2 = Key.D;
         CROUCH_KEY = Key.DOWN;
         CROUCH_KEY2 = Key.S;
+        SPACE_KEY = Key.SPACE;
     }
 
     public void update() {

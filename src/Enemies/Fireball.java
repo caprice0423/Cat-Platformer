@@ -59,6 +59,7 @@ public class Fireball extends Enemy {
         // if fireball touches player, it disappears
         super.touchedPlayer(player);
         this.mapEntityStatus = MapEntityStatus.REMOVED;
+      //  System.out.println("ahh");
     }
 
     @Override

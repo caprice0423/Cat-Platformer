@@ -24,6 +24,7 @@ public class Camera extends Rectangle {
 
     // current map entities that are to be included in this frame's update/draw cycle
     private ArrayList<Enemy> activeEnemies = new ArrayList<>();
+    private ArrayList<Attacking> activeAttacking = new ArrayList<>();
     private ArrayList<EnhancedMapTile> activeEnhancedMapTiles = new ArrayList<>();
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
 
@@ -69,11 +70,16 @@ public class Camera extends Rectangle {
     // active entities are calculated each frame using the loadActiveEntity methods below
     public void updateMapEntities(Player player) {
         activeEnemies = loadActiveEnemies();
+        activeAttacking = loadActiveAttacking();
         activeEnhancedMapTiles = loadActiveEnhancedMapTiles();
         activeNPCs = loadActiveNPCs();
 
         for (Enemy enemy : activeEnemies) {
             enemy.update(player);
+        }
+        
+        for (Attacking a : activeAttacking) {
+            a.update(player);
         }
 
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
@@ -113,6 +119,30 @@ public class Camera extends Rectangle {
         }
         return activeEnemies;
     }
+    
+    private ArrayList<Attacking> loadActiveAttacking() {
+        ArrayList<Attacking> activeAttacking = new ArrayList<>();
+        for (int i = map.getAttacking().size() - 1; i >= 0; i--) {
+            Attacking a = map.getAttacking().get(i);
+
+            if (isMapEntityActive(a)) {
+                activeAttacking.add(a);
+                if (a.mapEntityStatus == MapEntityStatus.INACTIVE) {
+                    a.setMapEntityStatus(MapEntityStatus.ACTIVE);
+                }
+            } else if (a.getMapEntityStatus() == MapEntityStatus.ACTIVE) {
+                a.setMapEntityStatus(MapEntityStatus.INACTIVE);
+                if (a.isRespawnable()) {
+                    a.initialize();
+                }
+            } else if (a.getMapEntityStatus() == MapEntityStatus.REMOVED) {
+                map.getAttacking().remove(i);
+            }
+        }
+        return activeAttacking;
+    }
+    
+    
 
     // determine which enhanced map tiles are active (within range of the camera)
     // if enhanced map tile is currently active and was also active last frame, nothing special happens and enhanced map tile is included in active list
@@ -210,6 +240,13 @@ public class Camera extends Rectangle {
                 enemy.draw(graphicsHandler);
             }
         }
+        
+        for (Attacking a : activeAttacking) {
+            if (containsDraw(a)) {
+                a.draw(graphicsHandler);
+            }
+        }
+        
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
             if (containsDraw(enhancedMapTile)) {
                 enhancedMapTile.draw(graphicsHandler);
@@ -240,6 +277,11 @@ public class Camera extends Rectangle {
     public ArrayList<Enemy> getActiveEnemies() {
         return activeEnemies;
     }
+    
+    public ArrayList<Attacking> getActiveAttacking() {
+        return activeAttacking;
+    }
+
 
     public ArrayList<EnhancedMapTile> getActiveEnhancedMapTiles() {
         return activeEnhancedMapTiles;

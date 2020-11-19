@@ -5,13 +5,16 @@ import Engine.KeyLocker;
 import Engine.Keyboard;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
+import Players.FishThrow;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
+import Utils.Stopwatch;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+
+import Enemies.Fireball;
 
 public abstract class Player extends GameObject {
 	// values that affect player movement
@@ -31,6 +34,7 @@ public abstract class Player extends GameObject {
 	// values used to keep track of player's current state
 	protected PlayerState playerState;
 	protected PlayerState previousPlayerState;
+	protected static EnemyState enemyState;
 	protected Direction facingDirection;
 	protected AirGroundState airGroundState;
 	protected AirGroundState previousAirGroundState;
@@ -50,20 +54,27 @@ public abstract class Player extends GameObject {
 	protected Key MOVE_LEFT_KEY2 = Key.A;
 	protected Key MOVE_RIGHT_KEY2 = Key.D;
 	protected Key CROUCH_KEY2 = Key.S;
+	protected Key SPACE_KEY = Key.SPACE;
 
 	// if true, player cannot be hurt by enemies (good for testing)
 	protected boolean isInvincible = false;
 	protected boolean isFirst;
 	protected boolean isSecond;
 
+	private Stopwatch shotTimer = new Stopwatch();
+
 	public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
 		super(spriteSheet, x, y, startingAnimationName);
+		this.x = x;
+		this.y = y;
 		facingDirection = Direction.RIGHT;
 		airGroundState = AirGroundState.AIR;
 		previousAirGroundState = airGroundState;
 		playerState = PlayerState.STANDING;
 		previousPlayerState = playerState;
 		levelState = LevelState.RUNNING;
+		shotTimer.setWaitTime(500);
+
 	}
 
 	public static LevelState getLevelState() {
@@ -135,9 +146,37 @@ public abstract class Player extends GameObject {
 		}
 	}
 
+	public void kill() {
+		int fishX;
+		int fishY;
+		float movementSpeed;
+
+		if (Keyboard.isKeyDown(SPACE_KEY) && shotTimer.isTimeUp()) {
+			shotTimer.reset();
+			if (facingDirection == Direction.RIGHT) {
+				fishX = Math.round(getLocationX()) + getScaledWidth();
+				movementSpeed = 1.5f;
+			} else {
+				fishX = Math.round(getLocationX());
+				movementSpeed = -1.5f;
+			}
+
+			if (playerState == PlayerState.CROUCHING) {
+				fishY = Math.round(getLocationY()) + 35;
+			} else {
+				fishY = Math.round(getLocationY()) + 20;
+			}
+
+			FishThrow a = new FishThrow(new Point(fishX, fishY), movementSpeed, 1000);
+
+			map.addAttack(a);
+
+		} 
+	}
+
 	// player STANDING state logic
 	protected void playerStanding() {
-
+		kill();
 		// sets animation to a STAND animation based on which way player is facing
 		currentAnimationName = facingDirection == Direction.RIGHT ? "STAND_RIGHT" : "STAND_LEFT";
 
@@ -161,10 +200,14 @@ public abstract class Player extends GameObject {
 		else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(CROUCH_KEY2)) {
 			playerState = PlayerState.CROUCHING;
 		}
+
+		// kill();
 	}
 
 	// player WALKING state logic
 	protected void playerWalking() {
+		kill();
+		System.out.println(getLocationX() + "," + getLocationY());
 		// sets animation to a WALK animation based on which way player is facing
 		currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
 
@@ -178,7 +221,8 @@ public abstract class Player extends GameObject {
 				tracker.removeAll(Collections.singleton(MOVE_LEFT_KEY));
 				tracker.removeAll(Collections.singleton(MOVE_LEFT_KEY2));
 			}
-			System.out.println(tracker);
+
+			// System.out.println(tracker);
 		}
 
 		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)
@@ -192,7 +236,7 @@ public abstract class Player extends GameObject {
 				tracker.removeAll(Collections.singleton(MOVE_RIGHT_KEY));
 				tracker.removeAll(Collections.singleton(MOVE_RIGHT_KEY2));
 			}
-			System.out.println(tracker);
+			// System.out.println(tracker);
 		}
 
 		else if (Keyboard.isKeyDown(MOVE_LEFT_KEY) && Keyboard.isKeyDown(MOVE_RIGHT_KEY)
@@ -225,11 +269,12 @@ public abstract class Player extends GameObject {
 		else if (Keyboard.isKeyDown(CROUCH_KEY) || Keyboard.isKeyDown(CROUCH_KEY2)) {
 			playerState = PlayerState.CROUCHING;
 		}
-
+//kill();
 	}
 
 	// player CROUCHING state logic
 	protected void playerCrouching() {
+		kill();
 		// sets animation to a CROUCH animation based on which way player is facing
 		currentAnimationName = facingDirection == Direction.RIGHT ? "CROUCH_RIGHT" : "CROUCH_LEFT";
 
@@ -254,10 +299,12 @@ public abstract class Player extends GameObject {
 			keyLocker.lockKey(JUMP_KEY2);
 			playerState = PlayerState.JUMPING;
 		}
+
 	}
 
 	// player JUMPING state logic
 	protected void playerJumping() {
+		kill();
 		// if last frame player was on ground and this frame player is still on ground,
 		// the jump needs to be setup
 		if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
@@ -315,6 +362,7 @@ public abstract class Player extends GameObject {
 		else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) {
 			playerState = PlayerState.STANDING;
 		}
+
 	}
 
 	// while player is in air, this is called, and will increase momentumY by a set
@@ -379,6 +427,12 @@ public abstract class Player extends GameObject {
 		}
 	}
 
+	/*
+	 * public void hurtEnemies(MapEntity mapEntity) { if (!isInvincible) { // if map
+	 * entity is an enemy, kill player on touch if (mapEntity instanceof Attacking)
+	 * { enemyState = EnemyState.DEAD; } } }
+	 */
+
 	// other entities can call this to tell the player they beat a level
 	public void completeLevel() {
 		levelState = LevelState.LEVEL_COMPLETED;
@@ -438,6 +492,14 @@ public abstract class Player extends GameObject {
 		}
 	}
 
+	public float getLocationX() {
+		return x;
+	}
+
+	public float getLocationY() {
+		return y;
+	}
+
 	public PlayerState getPlayerState() {
 		return playerState;
 	}
@@ -465,4 +527,5 @@ public abstract class Player extends GameObject {
 	public void addListener(PlayerListener listener) {
 		listeners.add(listener);
 	}
+
 }
