@@ -13,7 +13,6 @@ import NPCs.Walrus;
 import Tilesets.CommonTileset;
 import Utils.Direction;
 import Utils.Point;
-
 import java.util.ArrayList;
 
 // Represents Level 3

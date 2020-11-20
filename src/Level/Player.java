@@ -209,7 +209,7 @@ public abstract class Player extends GameObject {
 	// player WALKING state logic
 	protected void playerWalking() {
 		kill();
-		System.out.println(getLocationX() + "," + getLocationY());
+		// System.out.println(getLocationX() + "," + getLocationY());
 		// sets animation to a WALK animation based on which way player is facing
 		currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
 

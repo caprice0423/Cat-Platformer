@@ -1,6 +1,7 @@
 package MapEditor;
 
 import Level.Map;
+import Maps.FinalLevelMap;
 import Maps.Level2Map;
 import Maps.Level3Map;
 import Maps.Level4Map;
@@ -17,6 +18,7 @@ public class EditorMaps {
 			 	add("Level2Map");
 				add("Level3Map");
 				add("Level4Map");
+				add("FinalLevelMap");
 
 			}
 		};
@@ -36,6 +38,9 @@ public class EditorMaps {
 
 		case "Level4Map":
 			return new Level4Map();
+		
+		case "FinalLevelMap":
+			return new FinalLevelMap();
 
 		default:
 			throw new RuntimeException("Unrecognized map name");

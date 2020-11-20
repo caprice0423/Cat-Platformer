@@ -8,22 +8,20 @@ import Level.LevelState;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
-import Maps.TestMap;
-import Maps.Level2Map;
-import Maps.Level4Map;
-import Maps.Level3Map;
+import Maps.*;
 import Players.Cat;
 import Utils.Stopwatch;
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
 	protected ScreenCoordinator screenCoordinator;
-	protected Map map, map2, map3, map4;
-	protected Player player, player2, player3, player4;
+	protected Map map, map2, map3, map4, finalMap;
+	protected Player player, player2, player3, player4, playerFinal;
 	protected PlayLevelScreenState playLevelScreenState;
 	protected Stopwatch screenTimer = new Stopwatch();
 	protected LevelClearedScreen levelClearedScreen;
 	protected LevelLoseScreen levelLoseScreen;
+	protected GameWonScreen gameWonScreen;
 	private int mapNum = 1;
 	public static int playerLives;
 
@@ -35,7 +33,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		this.map2 = new Level2Map();
 		this.map3 = new Level3Map();
 		this.map4 = new Level4Map();
-		
+		this.finalMap = new FinalLevelMap();
 	}
 
 	public void initialize() {
@@ -52,6 +50,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		} else if (mapNum == 4) {
 			map4.reset();
 			this.map4 = new Level4Map();
+		} else if (mapNum == 5) {
+			finalMap.reset();
+			this.finalMap = new FinalLevelMap();
 		}
 
 		// setup player
@@ -59,6 +60,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		this.player2 = new Cat(map2.getPlayerStartPosition().x, map2.getPlayerStartPosition().y);
 		this.player3 = new Cat(map2.getPlayerStartPosition().x, map3.getPlayerStartPosition().y);
 		this.player4 = new Cat(map4.getPlayerStartPosition().x, map4.getPlayerStartPosition().y);
+		this.playerFinal = new Cat(finalMap.getPlayerStartPosition().x, finalMap.getPlayerStartPosition().y);
 
 		this.player.setMap(map);
 		this.player.addListener(this);
@@ -71,10 +73,14 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		this.player3.setMap(map3);
 		this.player3.addListener(this);
 		this.player3.setLocation(map3.getPlayerStartPosition().x, map3.getPlayerStartPosition().y);
-
+		
 		this.player4.setMap(map4);
 		this.player4.addListener(this);
 		this.player4.setLocation(map4.getPlayerStartPosition().x, map4.getPlayerStartPosition().y);
+
+		this.playerFinal.setMap(finalMap);
+		this.playerFinal.addListener(this);
+		this.playerFinal.setLocation(finalMap.getPlayerStartPosition().x, finalMap.getPlayerStartPosition().y);
 
 		this.playLevelScreenState = PlayLevelScreenState.RUNNING;
 	}
@@ -97,6 +103,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			} else if (mapNum == 4) {
 				player4.update();
 				map4.update(player4);
+			} else if (mapNum == 5) {
+				playerFinal.update();
+				finalMap.update(playerFinal);
 			}
 			break;
 		// if level has been completed, bring up level cleared screen
@@ -107,7 +116,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
 			break;
 		// if level cleared screen is up and the timer is up for how long it should stay
-		// out, go back to main menu
+		// out, move on
 		case LEVEL_WIN_MESSAGE:
 			if (screenTimer.isTimeUp()) {
 				levelClearedScreen = null;
@@ -124,6 +133,11 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 					playLevelScreenState = PlayLevelScreenState.NEXT_LEVEL;
 					player4.setLevelState(LevelState.RUNNING);
 					System.out.println(mapNum);
+				} else if (mapNum == 5) {
+					playLevelScreenState = PlayLevelScreenState.NEXT_LEVEL;
+					playerFinal.setLevelState(LevelState.RUNNING);
+				} else if (mapNum == 6) {
+					playLevelScreenState = PlayLevelScreenState.GAME_WON;
 				}
 			}
 
@@ -141,7 +155,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		case LEVEL_LOSE_MESSAGE:
 			levelLoseScreen.update();
 			break;
-		// displays new map for level 2
+		// displays new map for level after current one
 		case NEXT_LEVEL:
 			if (mapNum == 2) {
 				player2.update();
@@ -152,10 +166,17 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			} else if (mapNum == 4) {
 				player4.update();
 				map4.update(player4);
+			} else if (mapNum == 5) {
+				playerFinal.update();
+				finalMap.update(playerFinal);
 			}
 			break;
+		case GAME_WON:
+				gameWonScreen = new GameWonScreen(this);
+				gameWonScreen.initialize();
+			break;
 		}
-
+		
 	}
 
 	public void draw(GraphicsHandler graphicsHandler) {
@@ -176,7 +197,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			} else if (mapNum == 4) {
 				map4.draw(graphicsHandler);
 				player4.draw(graphicsHandler);
-			} 
+			} else if (mapNum == 5) {
+				finalMap.draw(graphicsHandler);
+				playerFinal.draw(graphicsHandler);
+			}
 			break;
 		case LEVEL_WIN_MESSAGE:
 			levelClearedScreen.draw(graphicsHandler);
@@ -191,10 +215,16 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			} else if (mapNum == 4) {
 				map4.draw(graphicsHandler);
 				player4.draw(graphicsHandler);
+			} else if (mapNum == 5) {
+				finalMap.draw(graphicsHandler);
+				playerFinal.draw(graphicsHandler);
 			}
 			break;
 		case LEVEL_LOSE_MESSAGE:
 			levelLoseScreen.draw(graphicsHandler);
+			break;
+		case GAME_WON: 
+			gameWonScreen.draw(graphicsHandler);
 			break;
 		}
 	}
@@ -231,6 +261,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
 	// This enum represents the different states this screen can be in
 	private enum PlayLevelScreenState {
-		RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, NEXT_LEVEL
+		RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, NEXT_LEVEL, GAME_WON
 	}
 }
